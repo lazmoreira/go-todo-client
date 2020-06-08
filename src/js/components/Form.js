@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addTask } from "../actions/index";
+import { Grid, TextField } from "@material-ui/core";
 
 function mapDispatchToProps(dispatch) {
     return {
@@ -37,19 +38,29 @@ class NewTaskForm extends Component {
         const task = this.state.task;
 
         return (
+            <div>
+                <form onSubmit={this.handleSubmit}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="task"
+                                value={task}
+                                onChange={this.handleChange}
+                                style={{ margin: 0 }}
+                                placeholder="Add a new task"
+                                fullWidth
+                                variant="outlined"
+                                margin="none"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
+                </form>
+            </div >
 
-            <form onSubmit={this.handleSubmit}>
-                <div>
-                    <label htmlFor="task">Task</label>
-                    <input
-                        type="text"
-                        id="task"
-                        value={task}
-                        onChange={this.handleChange}
-                    />
-                </div>
-                <button type="submit">Create</button>
-            </form>
+
         );
     }
 }

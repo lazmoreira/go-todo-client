@@ -1,25 +1,48 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getTasks } from "../actions/index";
+import { getTasks, deleteTask, markTask } from "../actions/index";
+import { Paper, List, ListItem, IconButton, ListItemText, ListItemIcon } from "@material-ui/core";
+import CheckCircle from "@material-ui/icons/CheckCircle";
+import DeleteIcon from "@material-ui/icons/Delete";
 
-export class TaskList extends Component {
+class TaskList extends Component {
     componentDidMount() {
         this.props.getTasks();
+    }
+
+    handleDelete(taskId, event) {
+        this.props.deleteTask(taskId);
+    }
+
+    handleUpdate(taskId, event) {
+        this.props.markTask(taskId);
     }
 
     render() {
         if (!this.props.tasks) {
             return (
-                <p>No task added yet!</p>
+                <Paper>No task added yet!</Paper>
             );
         }
         else {
             return (
-                <ul>
+                <List dense={false}>
                     {this.props.tasks.map(task => (
-                        <li key={task._id}>{task.task}</li>
+                        <ListItem key={task._id} divider={true}>
+                            <ListItemText primary={task.task} className={(task.status ? 'marked' : 'unmarked')} />
+                            <ListItemIcon>
+                                <IconButton edge="end" aria-label="checkcircle" onClick={(event) => this.handleUpdate(task._id, event)}>
+                                    <CheckCircle />
+                                </IconButton>
+                            </ListItemIcon>
+                            <ListItemIcon>
+                                <IconButton edge="end" aria-label="delete" onClick={(event) => this.handleDelete(task._id, event)}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </ListItemIcon>
+                        </ListItem>
                     ))}
-                </ul>
+                </List>
             );
         }
     }
@@ -32,4 +55,4 @@ function mapStateToProps(state) {
 };
 
 
-export default connect(mapStateToProps, { getTasks })(TaskList);
+export default connect(mapStateToProps, { getTasks, deleteTask, markTask })(TaskList);
