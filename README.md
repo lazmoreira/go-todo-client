@@ -1,1 +1,1 @@
-##Simple to-do app frontend using react
+Simple to-do app frontend using react
